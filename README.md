@@ -6,7 +6,7 @@ The project is primarily educational, covering both the liquid crystal physics a
 - derivation of an expression for the free energy of deformation as a sum of splay, twist and bend terms
 - application of the calculus of variations to find an expression for a minimal energy functional/equilibrium configuration of the LC director
 - simplification of the full CoV expression for cases of isotropic elastic constants, zero field etc.
-- algorithms for solution of the director configuration for teh special cases where a linear equation results
+- algorithms for solution of the director configuration for the special cases where a linear equation results
 - pragmatic routines for solution of the general case
 
 The routines are intended to provide insight into LC behaviour; some of the later programs may be of practical value in situations of practical importance.
