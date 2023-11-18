@@ -19,7 +19,8 @@ def initialise_theta(z_vals, cell_thickness, tilt1, tilt2, max_tilt):
 def voltage_distribution(cell_thickness, theta_vals, voltage, eps_par, eps_perp):
     """Given the LC properties and tilt profile, calculate the non-uniform
     potential distribution across a nematic layer resulting from the LC
-    anisotropy. Interpolate theta values in gaps."""
+    anisotropy. Interpolate theta values in gaps. We use the fact that the
+    dielectric displacement is constant through the layer."""
 
     # For N grid points, there are N-1 dielectric layers. Interpolate the tilt angles.
     gap_thetas=[(theta_vals[i]+theta_vals[i+1])/2.0 for i in range(len(theta_vals)-1)]
@@ -78,7 +79,7 @@ def euler_lagrange(theta_vals, cell_thickness, k_33, k_11, eps_par, eps_perp, vo
     sin_theta=np.sin(theta_mid)
     term1=((k_11-k_33)*cos_theta2+k_33)*d2theta_dz2
     term2=(k_33-k_11)*sin_theta*cos_theta*dtheta_dz*dtheta_dz
-    vd=voltage_distribution2(cell_thickness, theta_vals, voltage, eps_par, eps_perp)
+    vd=voltage_distribution(cell_thickness, theta_vals, voltage, eps_par, eps_perp)
     field=np.array([(vd[i]+vd[i+1])/(2.0*grid_spacing) for i in range(len(vd)-1)])
     term3=(eps_par-eps_perp)*eps0*field*field*cos_theta*sin_theta
     el_result=term1+term2+term3
