@@ -12,7 +12,7 @@ eps0=8.854e-12
 def initialise_theta(grid_points, tilt1, tilt2, max_tilt):
     """The routine is used to seed a smoothly tilted director configuration as a starting point for
     the numerical solution routines, to avoid the trivial solution tilt=0 (for all z) which is
-    valid at all applied fields if tilt1=-tilt2"""
+    valid at all applied fields if tilt1=tilt2=0"""
     thetas=np.array([tilt1+(tilt2-tilt1)*(index/(grid_points-1))+max_tilt*sin(pi*(index/(grid_points-1))) for index in range(grid_points)])
     return thetas
 
@@ -144,7 +144,7 @@ def el_wrapper(euler_cen, params):
     el_result=euler_lagrange(euler_vals, params[3], params[4], params[5], params[6], params[7], params[8], params[9], params[10])
     return el_result
 
-def run_it():
+def demo():
     """ Wrapper for a main routine to provide exemplary output"""
     grid_points=101
     twist=np.pi/2 # TN cell
@@ -153,7 +153,6 @@ def run_it():
     max_tilt=np.pi/36
     cell_thickness=10e-6
     z_vals=np.linspace(0, cell_thickness, grid_points)
-    voltage=6.0
     k_11=11.7e-12 # LC elastic constants
     k_22=8.8e-12
     k_33=19.5e-12
@@ -204,9 +203,12 @@ def run_it():
     ax3.set_xlabel('V')
     ax3.set_ylabel('Mid-plane tilt')
     ax1.legend()
+    ax1.set_box_aspect(1)
+    ax2.set_box_aspect(1)
+    ax3.set_box_aspect(1)
     plt.show()
 
 
 
 if __name__=='__main__':
-    run_it()
+    demo()
