@@ -2,7 +2,7 @@ from tn_routines import *
 
 def run_it():
     """ Wrapper for a main routine to provide exemplary output"""
-    grid_points=101
+    grid_points=51
     twist=np.radians(240)
     tilt1=pi/90.0 # 2 degree pretilt
     tilt2=pi/90.0
@@ -46,7 +46,7 @@ def run_it():
     profile[int(rows/2), :]=0.0
     profile[-1, :]=twist
     # And plot a few things
-    fig, (ax1, ax2, ax3) = plt.subplots(1,3)
+    fig, (ax1, ax2, ax3) = plt.subplots(1,3, figsize=(15, 5))
     col_list=[]
     for index, value in enumerate(v_range):
         if 2*value==int(2*value):

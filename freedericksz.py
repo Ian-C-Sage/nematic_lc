@@ -101,17 +101,20 @@ def run_it():
     """ Wrapper for a main routine to provide exemplary output"""
     cell_thickness=10e-6
     grid_points=101
-    k_11=1e-10 # LC elastic constant
-    k_33=2e-10 # LC elastic constant
-    eps_par=20.0
-    eps_perp=5.0
+    # Constants for E7
+    k_11=11.7e-12 
+    k_33=19.5e-12 
+    eps_par=19.5
+    eps_perp=5.17
     z_vals=np.linspace(0, cell_thickness, grid_points) # grid_points values
-    tilt1=0.0
-    tilt2=0.0
-    input_profile=initialise_theta(z_vals, cell_thickness, tilt1, tilt2, np.pi/4.0)
+    tilt1=np.radians(0.0)
+    tilt2=np.radians(0.0)
+    input_profile=initialise_theta(z_vals, cell_thickness, tilt1, tilt2, np.pi/3.0)
     #v_range=[20, 15, 10, 9, 8, 7, 6, 5, 4, 3.5, 3]
     #v_range=[5.0, 4.9, 4.8, 4.7, 4.6, 4.5, 4.4, 4.3, 4.2, 4.1, 4.0, 3.9, 3.8, 3.7, 3.6, 3.5, 3.4, 3.3, 3.2, 3.1, 3.0, 2.9, 2.8, 2.7, 2.6, 2.5, 0.0]
-    v_range=[5.0, 6.0, 7.0, 8.0, 9.0, 10.0, 11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0, 18.0, 19.0, 20.0]
+    v_range=[0.0, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]
+    #v_range.reverse()
+    #v_range=[2.0, 3.0]
     profile=np.zeros((grid_points, len(v_range)), float)
     profile[0, :]=tilt1
     profile[grid_points-1, :]=tilt2
@@ -119,8 +122,15 @@ def run_it():
         sol_struct=root(el_wrapper, input_profile[1:-1], [tilt1, tilt2, cell_thickness, k_33, k_11, eps_par, eps_perp, voltage], method='hybr')
         for t_index, theta_val in enumerate(sol_struct.x):
             profile[t_index+1, v_index]=theta_val
-            input_profile[t_index+1]=theta_val
-    fig, (ax1, ax2) = plt.subplots(1, 2)
+            # Convergence to the correct solution is a little delicate; careful
+            # choice of the starting configuration solves the problem.
+            # Only use the result as the starting configuration to the next
+            # voltage step, if the mid-plane tilt is greater than that set by
+            # initialise_theta, above
+            if sol_struct.x[int((grid_points-2)/2)]>np.pi/3:
+                input_profile[t_index+1]=theta_val
+        #print(sol_struct.x[int((grid_points-2)/2)])
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
     sol_array=sol_struct.x
     sol_array=np.insert(sol_array, 0, tilt1)
     sol_array=np.append(sol_array, tilt2)
@@ -128,8 +138,12 @@ def run_it():
     for index in range(len(v_range)):
         ax1.plot(z_vals, profile[:, index], label=str(v_range[index])+'V')
     ax1.legend()
+    ax1.set_ylabel('Through-cell tilt')
     ax2.plot(v_range, mid_tilt)
-    #ax2.set_xlim([0, 5])
+    ax2.set_xlabel('V')
+    ax2.set_ylabel('Mid-plane tilt')
+    ax1.set_box_aspect(1)
+    ax2.set_box_aspect(1)
     plt.show()
 
 

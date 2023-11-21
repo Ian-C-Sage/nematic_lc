@@ -1,8 +1,11 @@
 from tn_routines import *
+from datetime import datetime
+
 
 def run_it():
     """ Wrapper for a main routine to provide exemplary output"""
-    grid_points=101
+    startTime = datetime.now()
+    grid_points=51
     twist=np.pi/2 # TN cell
     tilt1=pi/90.0 # 2 degree pretilt
     tilt2=pi/90.0
@@ -44,8 +47,9 @@ def run_it():
     profile[int(rows/2)-1, :]=tilt2
     profile[int(rows/2), :]=0.0
     profile[-1, :]=twist
+    print("Execution time: ", datetime.now() - startTime)
     # And plot a few things
-    fig, (ax1, ax2, ax3) = plt.subplots(1,3)
+    fig, (ax1, ax2, ax3) = plt.subplots(1,3, figsize=(15, 5))
     col_list=[]
     for index, value in enumerate(v_range):
         if 2*value==int(2*value):
@@ -59,6 +63,7 @@ def run_it():
     ax3.set_xlabel('V')
     ax3.set_ylabel('Mid-plane tilt')
     ax1.legend()
+    #plt.figure().set_figwidth(15)
     ax1.set_box_aspect(1)
     ax2.set_box_aspect(1)
     ax3.set_box_aspect(1)
