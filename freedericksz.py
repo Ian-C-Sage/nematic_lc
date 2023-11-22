@@ -109,7 +109,8 @@ def run_it():
     z_vals=np.linspace(0, cell_thickness, grid_points) # grid_points values
     tilt1=np.radians(0.0)
     tilt2=np.radians(0.0)
-    input_profile=initialise_theta(z_vals, cell_thickness, tilt1, tilt2, np.pi/3.0)
+    init_tilt=np.pi/5.0 # Too large or small a value here results in failure
+    input_profile=initialise_theta(z_vals, cell_thickness, tilt1, tilt2, init_tilt)
     #v_range=[20, 15, 10, 9, 8, 7, 6, 5, 4, 3.5, 3]
     #v_range=[5.0, 4.9, 4.8, 4.7, 4.6, 4.5, 4.4, 4.3, 4.2, 4.1, 4.0, 3.9, 3.8, 3.7, 3.6, 3.5, 3.4, 3.3, 3.2, 3.1, 3.0, 2.9, 2.8, 2.7, 2.6, 2.5, 0.0]
     v_range=[0.0, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0, 6.0, 7.0, 8.0, 9.0, 10.0]
@@ -127,7 +128,7 @@ def run_it():
             # Only use the result as the starting configuration to the next
             # voltage step, if the mid-plane tilt is greater than that set by
             # initialise_theta, above
-            if sol_struct.x[int((grid_points-2)/2)]>np.pi/3:
+            if sol_struct.x[int((grid_points-2)/2)]>init_tilt:
                 input_profile[t_index+1]=theta_val
         #print(sol_struct.x[int((grid_points-2)/2)])
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
