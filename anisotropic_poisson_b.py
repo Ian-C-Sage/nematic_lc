@@ -1,4 +1,9 @@
-# IPS cell configuration
+# Standalone routine illustrating solution of the 2d generalised Poisson equation
+# for a system including an anisotropic dielectric medium. The calculation uses
+# Gunter's assymmetric method Journal of Computational Physics 209 (2005) 354–370
+# and Journal of Computational Physics Volume 272, 1 September 2014, Pages 526-549
+# The configuration modelled here is an IPS cell.
+# See anisotropic_poisson.py for a similar model of a cell with a through-cell field.
 
 import numpy as np
 from scipy.sparse import coo_array, csr_array

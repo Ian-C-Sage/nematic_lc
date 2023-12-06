@@ -1,3 +1,11 @@
+# Standalone routine illustrating solution of the 2d generalised Poisson equation
+# for a system including an anisotropic dielectric medium. The calculation uses
+# Gunter's assymmetric method Journal of Computational Physics 209 (2005) 354–370
+# and Journal of Computational Physics Volume 272, 1 September 2014, Pages 526-549
+# The configuration modelled here is a cell with a stripe upper electrode and
+# continuous lower electrode.
+# See anisotropic_poisson_b.py for a similar model of an IPS cell.
+
 import numpy as np
 from scipy.sparse import coo_array, csr_array
 import scipy.sparse.linalg as linalg
@@ -233,7 +241,7 @@ scalar_field=np.sqrt(field_x*field_x+field_y*field_y)
 
 fig1, ax1=plt.subplots()
 ax1.imshow(pot, cmap='jet', interpolation='nearest')
-
+ax1.set_title("Potential")
 fig2, ax2=plt.subplots()
 ax2.imshow(scalar_field, vmin=0, vmax=500000, cmap='jet', interpolation='nearest')
 
@@ -250,8 +258,6 @@ for i, a in enumerate(field_y):
 X,Y = np.meshgrid(np.arange(x_points), np.arange(y_points))
 n=15
 ax2.quiver(X[::n,::n], Y[::n, ::n], -field_x[::n, ::n], -field_y[::n, ::n], angles='xy', scale_units='xy', scale=int(700000/resolution), headlength=3)
-
-#fig3, ax3=plt.subplots()
-#ax3.imshow(e_par)
+ax2.set_title("Scalar and vector field")
 
 plt.show()
