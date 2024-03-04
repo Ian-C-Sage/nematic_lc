@@ -1,0 +1,21 @@
+/* [wxMaxima batch file version 1] [ DO NOT EDIT BY HAND! ]*/
+/* [ Created with wxMaxima version 21.02.0-DevelopmentSnapshot ] */
+/* [wxMaxima: input   start ] */
+EL(expr, var, t):=
+block([deplist:copylist(dependencies)],
+t:if listp(t) then t else [t],
+a:makelist(diff(var, t[i]), i, length(t)),
+remove(all, dependency),
+b:makelist(diff(expr, a[i]), i, length(t)),
+c:-diff(expr, var),
+for i in deplist do (depends(op(i),args(i))),
+d:makelist(diff(b[i], t[i]), i, length(t)),
+e:c,
+for i in d do (e:e+i),
+e=0)$
+/* [wxMaxima: input   end   ] */
+
+
+
+/* Old versions of Maxima abort on loading files that end in a comment. */
+"Created with wxMaxima 21.02.0-DevelopmentSnapshot"$
